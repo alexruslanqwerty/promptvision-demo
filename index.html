@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PromptVision DEMO | Free AI Image Describer & Prompt Generator</title>
+  <meta name="description" content="Use local AI or Gemini to generate image descriptions, captions, alt text, and Midjourney prompts. Optimized for local network and offline workflows.">
+  <meta name="keywords" content="image describer, image description generator, image to prompt, local ai, lm studio, gemini">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👁️‍🗨️</text></svg>">
+  
+  <!-- Premium Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Premium Custom Styling -->
+  <link rel="stylesheet" href="css/style.css?v=2">
+</head>
+<body>
+
+  <!-- App Container -->
+  <div class="app-layout">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="main-sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo">
+          <!-- User Custom Logo -->
+          <img src="logo.png" alt="Logo" class="custom-logo" style="max-height: 32px; width: auto; border-radius: 50%; object-fit: cover;" onerror="if(this.src.includes('logo.png')){this.src='logo.jpg';}else{this.style.display='none'; this.nextElementSibling.style.display='block';}">
+          
+          <!-- Fallback SVG Logo (shown if logo.png is missing) -->
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="logo-icon fallback-svg" style="display: none;">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+          <span class="brand-name">PromptVision <span class="brand-badge" style="background: linear-gradient(135deg, #10b981, #059669);">DEMO</span></span>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Инструменты AI</div>
+        <ul class="nav-links">
+          <li>
+            <a href="#" class="nav-link active" id="nav-describer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              <span data-i18n="nav_describer">Анализ изображений</span>
+            </a>
+          </li>
+        </ul>
+        
+        <div class="nav-section-title">История & Архивы</div>
+        <ul class="nav-links">
+          <li>
+            <a href="#" class="nav-link" id="nav-history-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span data-i18n="nav_history">История сканирований</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link" id="nav-gallery-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              <span>Галерея промптов</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <button class="btn btn-secondary btn-block" id="sidebar-settings-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span data-i18n="api_settings">Настройки API</span>
+        </button>
+        <div class="network-badge-container" title="Демо-версия не использует локальный сервер">
+          <span class="pulse-indicator" style="background-color: var(--success);"></span>
+          <span class="network-status" id="server-status-label" style="color: var(--success); font-weight: bold;">DEMO AI Активен</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Window -->
+    <div class="main-window">
+      
+      <!-- Top Header -->
+      <header class="top-header">
+        <button class="mobile-toggle" id="mobile-sidebar-toggle" aria-label="Открыть меню">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        
+        <h1 class="header-title" data-i18n="app_title">PromptVision (ДЕМО-версия)</h1>
+        
+        <div class="header-actions">
+          <div class="active-engine-badge" id="engine-badge">
+            <span class="badge-dot gemini" style="background-color: #10b981; box-shadow: 0 0 6px #10b981;"></span>
+            <span id="active-engine-text">Demo Simulator</span>
+          </div>
+
+          <select id="ui-lang-select" class="form-select" style="width: 70px; margin-right: 10px; background: transparent; border: 1px solid var(--border-color); color: var(--text-main);">
+            <option value="ru" selected>RU</option>
+            <option value="en">EN</option>
+          </select>
+          
+          <button class="theme-toggle" id="theme-toggle-btn" aria-label="Переключить тему">
+            <!-- Sun Icon (shows in dark theme) -->
+            <svg class="theme-icon sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <!-- Moon Icon (shows in light theme) -->
+            <svg class="theme-icon moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Workspace Scroll Area -->
+      <main class="workspace-container">
+        
+        <!-- Workspace Grid Layout -->
+        <div class="workspace-grid">
+          
+          <!-- Left Panel: Input Section -->
+          <section class="panel-card input-panel">
+            <div class="card-header">
+              <h2 class="card-title" data-i18n="step1_title">1. Загрузка Изображения</h2>
+              <p class="card-subtitle" data-i18n="step1_subtitle">Вставьте файл из буфера обмена, перетащите его или выберите на ПК</p>
+            </div>
+            
+            <div class="card-body">
+              <!-- Upload Area -->
+              <div class="upload-dropzone" id="dropzone">
+                <input type="file" id="file-input" accept="image/*" class="file-hidden-input" multiple>
+                <div class="dropzone-content">
+                  <div class="upload-pulse-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="17 8 12 3 7 8"></polyline>
+                      <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                  </div>
+                  <h3 class="upload-title" data-i18n="dropzone_title">Перетащите изображения сюда</h3>
+                  <p class="upload-text"><span data-i18n="dropzone_text_or">или</span> <span class="upload-browse" data-i18n="dropzone_text_browse">выберите файлы</span></p>
+                  <span class="upload-badge-shortcut" data-i18n="dropzone_shortcut">Ctrl + V для вставки</span>
+                </div>
+                <div class="dropzone-preview" id="dropzone-preview-container" style="display:none; padding: 15px; overflow-y: auto;">
+                  <div class="batch-preview-grid" id="batch-preview-grid">
+                    <!-- JS will inject thumbnails here -->
+                  </div>
+                  <div class="batch-preview-actions" style="margin-top: 10px; display: flex; justify-content: center;">
+                    <button class="btn btn-secondary" id="clear-all-previews-btn" style="font-size: 0.8rem; padding: 4px 12px;">Очистить все</button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Selected Image Metadata Bar (Will summarize batch now) -->
+              <div class="image-meta-bar" id="image-meta" style="display:none;">
+                <div class="meta-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                  <span class="meta-label">Файлов:</span>
+                  <span class="meta-value" id="meta-filename">0</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Общий размер:</span>
+                  <span class="meta-value" id="meta-filesize">0 KB</span>
+                </div>
+              </div>
+
+              <!-- Options Form Section -->
+              <div class="options-group">
+                <h2 class="card-title mt-4" data-i18n="step2_title">2. Настройки анализа</h2>
+                
+                <div class="form-row grid-2">
+                  <div class="form-group" style="display: none;">
+                    <label for="provider-select" class="form-label" data-i18n="engine_label">Интеллект (AI Движок):</label>
+                    <select id="provider-select" class="form-select">
+                      <option value="demo" selected>Demo Simulator</option>
+                    </select>
+                    <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
+                      <input type="checkbox" id="compare-engine-checkbox" style="width: 16px; height: 16px; cursor: pointer;">
+                      <label for="compare-engine-checkbox" style="font-size: 0.85rem; color: var(--text-muted); cursor: pointer;" data-i18n="engine_compare">Сравнить оба движка (A/B Test)</label>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="lang-select" class="form-label">Язык вывода:</label>
+                    <select id="lang-select" class="form-select">
+                      <option value="ru" selected>Русский (RU)</option>
+                      <option value="en">English (EN)</option>
+                      <option value="es">Español (ES)</option>
+                      <option value="zh">中文 (ZH)</option>
+                      <option value="de">Deutsch (DE)</option>
+                      <option value="fr">Français (FR)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Template Tags Grid -->
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Предоставленные шаблоны (необязательно):</label>
+                    <input type="hidden" id="mode-select" value="detailed">
+                    <div class="template-tags-grid" id="template-tags-container">
+                      <button type="button" class="template-tag-btn active" data-value="detailed">Подробное описание</button>
+                      <button type="button" class="template-tag-btn" data-value="caption">Краткое описание</button>
+                      <button type="button" class="template-tag-btn" data-value="people">Описание людей</button>
+                      <button type="button" class="template-tag-btn" data-value="marketing">Маркетинговый текст</button>
+                      <button type="button" class="template-tag-btn" data-value="fashion">Одежда и мода</button>
+                      <button type="button" class="template-tag-btn" data-value="objects">Распознавание объектов</button>
+                      <button type="button" class="template-tag-btn" data-value="problems">Решение задач по изображению</button>
+                      <button type="button" class="template-tag-btn" data-value="art-style">Анализ художественного стиля</button>
+                      <button type="button" class="template-tag-btn" data-value="chatgpt-prompt">Создать промпт для ChatGPT</button>
+                      <button type="button" class="template-tag-btn" data-value="image-prompt">Создать промпт изображения</button>
+                      <button type="button" class="template-tag-btn" data-value="nano-banana">Создать промпт Nano Banana</button>
+                      <button type="button" class="template-tag-btn" data-value="midjourney-prompt">Создать промпт для Midjourney</button>
+                      <button type="button" class="template-tag-btn" data-value="flux-prompt">Создать промпт для Flux</button>
+                      <button type="button" class="template-tag-btn" data-value="pixar-3d">Создать промпт 3D Pixar</button>
+                      <button type="button" class="template-tag-btn" data-value="json-prompt">Создать JSON-промпт</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Advanced Refinement Parameters Panel -->
+                <div class="form-row mt-3">
+                  <div class="refinement-accordion-header" id="refinement-toggle-btn" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: var(--bg-input); border-radius: var(--radius-md); border: 1px solid var(--border-color); cursor: pointer;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-secondary);"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                      <strong data-i18n="refinement_title" style="color: var(--text-main);">Стили и Параметры (Refinements)</strong>
+                    </div>
+                    <svg id="refinement-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 0.3s;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </div>
+                  
+                  <div id="refinement-panel" style="display: none; padding: 15px; border: 1px solid var(--border-color); border-top: none; border-bottom-left-radius: var(--radius-md); border-bottom-right-radius: var(--radius-md); background: rgba(0,0,0,0.1);">
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+                      <button type="button" id="randomize-params-btn" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.8rem; display: flex; align-items: center; gap: 5px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"></path><path d="M4 20L21 3"></path><path d="M21 16v5h-5"></path><path d="M15 15l6 6"></path><path d="M4 4l5 5"></path></svg>
+                        <span data-i18n="btn_randomize">Randomize</span>
+                      </button>
+                    </div>
+
+                    <!-- Category: Lighting -->
+                    <div class="param-category">
+                      <h4 class="param-category-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg> Lighting</h4>
+                      <div class="param-chips-grid">
+                        <button type="button" class="param-chip" data-category="lighting" data-val="Cinematic Lighting">Cinematic</button>
+                        <button type="button" class="param-chip" data-category="lighting" data-val="Natural Lighting">Natural</button>
+                        <button type="button" class="param-chip" data-category="lighting" data-val="Studio Softbox">Studio Softbox</button>
+                        <button type="button" class="param-chip" data-category="lighting" data-val="Neon Cyberpunk Lighting">Neon/Cyberpunk</button>
+                        <button type="button" class="param-chip" data-category="lighting" data-val="Golden Hour">Golden Hour</button>
+                        <button type="button" class="param-chip" data-category="lighting" data-val="Volumetric Fog">Volumetric Fog</button>
+                        <button type="button" class="param-chip" data-category="lighting" data-val="Rembrandt Lighting">Rembrandt</button>
+                        <button type="button" class="param-chip" data-category="lighting" data-val="Chiaroscuro">Chiaroscuro</button>
+                        <button type="button" class="param-chip" data-category="lighting" data-val="Bioluminescence">Bioluminescence</button>
+                        <button type="button" class="param-chip" data-category="lighting" data-val="Rim Lighting">Rim Lighting</button>
+                      </div>
+                    </div>
+
+                    <!-- Category: Camera Angle -->
+                    <div class="param-category mt-3">
+                      <h4 class="param-category-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg> Camera Angle</h4>
+                      <div class="param-chips-grid">
+                        <button type="button" class="param-chip" data-category="camera" data-val="Wide Angle Shot">Wide Angle</button>
+                        <button type="button" class="param-chip" data-category="camera" data-val="Extreme Macro Shot">Macro Extreme</button>
+                        <button type="button" class="param-chip" data-category="camera" data-val="Drone View">Drone View</button>
+                        <button type="button" class="param-chip" data-category="camera" data-val="Eye Level Shot">Eye Level</button>
+                        <button type="button" class="param-chip" data-category="camera" data-val="Low Angle Shot">Low Angle</button>
+                        <button type="button" class="param-chip" data-category="camera" data-val="Dutch Angle">Dutch Angle</button>
+                        <button type="button" class="param-chip" data-category="camera" data-val="Over-the-shoulder Shot">Over-the-shoulder</button>
+                        <button type="button" class="param-chip" data-category="camera" data-val="Isometric View">Isometric</button>
+                        <button type="button" class="param-chip" data-category="camera" data-val="Satellite View">Satellite View</button>
+                        <button type="button" class="param-chip" data-category="camera" data-val="Point of View (POV)">POV</button>
+                      </div>
+                    </div>
+
+                    <!-- Category: Film & Lens -->
+                    <div class="param-category mt-3">
+                      <h4 class="param-category-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg> Film & Lens</h4>
+                      <div class="param-chips-grid">
+                        <button type="button" class="param-chip" data-category="lens" data-val="Kodak Portra 400">Kodak Portra 400</button>
+                        <button type="button" class="param-chip" data-category="lens" data-val="Fujifilm Velvia">Fujifilm Velvia</button>
+                        <button type="button" class="param-chip" data-category="lens" data-val="35mm Film Grain">35mm Film Grain</button>
+                        <button type="button" class="param-chip" data-category="lens" data-val="Anamorphic Lens">Anamorphic Lens</button>
+                        <button type="button" class="param-chip" data-category="lens" data-val="85mm Portrait Lens">85mm Portrait</button>
+                        <button type="button" class="param-chip" data-category="lens" data-val="Fisheye Lens">Fisheye</button>
+                        <button type="button" class="param-chip" data-category="lens" data-val="IMAX 70mm">IMAX</button>
+                        <button type="button" class="param-chip" data-category="lens" data-val="VHS Glitch Effect">VHS Glitch</button>
+                        <button type="button" class="param-chip" data-category="lens" data-val="Polaroid Photo">Polaroid</button>
+                        <button type="button" class="param-chip" data-category="lens" data-val="Double Exposure">Double Exposure</button>
+                      </div>
+                    </div>
+
+                    <!-- Category: Composition -->
+                    <div class="param-category mt-3">
+                      <h4 class="param-category-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg> Composition</h4>
+                      <div class="param-chips-grid">
+                        <button type="button" class="param-chip" data-category="comp" data-val="Rule of Thirds">Rule of Thirds</button>
+                        <button type="button" class="param-chip" data-category="comp" data-val="Symmetrical Composition">Symmetrical</button>
+                        <button type="button" class="param-chip" data-category="comp" data-val="Golden Ratio">Golden Ratio</button>
+                        <button type="button" class="param-chip" data-category="comp" data-val="Centered Composition">Centered</button>
+                        <button type="button" class="param-chip" data-category="comp" data-val="Negative Space">Negative Space</button>
+                        <button type="button" class="param-chip" data-category="comp" data-val="Leading Lines">Leading Lines</button>
+                        <button type="button" class="param-chip" data-category="comp" data-val="Framing">Framing</button>
+                        <button type="button" class="param-chip" data-category="comp" data-val="Dynamic Action">Dynamic Action</button>
+                        <button type="button" class="param-chip" data-category="comp" data-val="Minimalist">Minimalist</button>
+                        <button type="button" class="param-chip" data-category="comp" data-val="Chaotic">Chaotic</button>
+                      </div>
+                    </div>
+
+                    <!-- Category: Mood -->
+                    <div class="param-category mt-3">
+                      <h4 class="param-category-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg> Mood</h4>
+                      <div class="param-chips-grid">
+                        <button type="button" class="param-chip" data-category="mood" data-val="Mysterious Atmosphere">Mysterious</button>
+                        <button type="button" class="param-chip" data-category="mood" data-val="Euphoric Emotion">Euphoric</button>
+                        <button type="button" class="param-chip" data-category="mood" data-val="Dark and Gothic">Dark/Gothic</button>
+                        <button type="button" class="param-chip" data-category="mood" data-val="Ethereal Dreamy">Ethereal</button>
+                        <button type="button" class="param-chip" data-category="mood" data-val="Post-Apocalyptic">Post-Apocalyptic</button>
+                        <button type="button" class="param-chip" data-category="mood" data-val="Serene and Peaceful">Serene</button>
+                        <button type="button" class="param-chip" data-category="mood" data-val="Romantic Vibe">Romantic</button>
+                        <button type="button" class="param-chip" data-category="mood" data-val="Futuristic">Futuristic</button>
+                        <button type="button" class="param-chip" data-category="mood" data-val="Melancholic">Melancholic</button>
+                        <button type="button" class="param-chip" data-category="mood" data-val="Whimsical Fantasy">Whimsical</button>
+                      </div>
+                    </div>
+
+                    <!-- Category: Style & Engine (Large Cards) -->
+                    <div class="param-category mt-4">
+                      <h4 class="param-category-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg> Style & Engine</h4>
+                      <div class="style-cards-grid">
+                        <button type="button" class="style-card" data-category="style" data-val="Photorealistic" style="background: linear-gradient(135deg, #4b5563, #1f2937);">Photorealistic</button>
+                        <button type="button" class="style-card" data-category="style" data-val="Unreal Engine 5 Render" style="background: linear-gradient(135deg, #1e3a8a, #0f172a);">Unreal Engine 5</button>
+                        <button type="button" class="style-card" data-category="style" data-val="Octane Render" style="background: linear-gradient(135deg, #374151, #000000);">Octane Render</button>
+                        <button type="button" class="style-card" data-category="style" data-val="Studio Ghibli Anime Style" style="background: linear-gradient(135deg, #c084fc, #4c1d95);">Anime / Ghibli</button>
+                        <button type="button" class="style-card" data-category="style" data-val="Classical Oil Painting" style="background: linear-gradient(135deg, #b45309, #451a03);">Oil Painting</button>
+                        <button type="button" class="style-card" data-category="style" data-val="Cyberpunk 2077 Art Style" style="background: linear-gradient(135deg, #0284c7, #4c1d95);">Cyberpunk 2077</button>
+                        <button type="button" class="style-card" data-category="style" data-val="High Fantasy Concept Art" style="background: linear-gradient(135deg, #334155, #0f172a);">Concept Art</button>
+                        <button type="button" class="style-card" data-category="style" data-val="Vaporwave Aesthetic" style="background: linear-gradient(135deg, #db2777, #312e81);">Vaporwave</button>
+                        <button type="button" class="style-card" data-category="style" data-val="Japanese Ukiyo-e Woodblock" style="background: linear-gradient(135deg, #9ca3af, #451a03);">Ukiyo-e</button>
+                        <button type="button" class="style-card" data-category="style" data-val="Claymation Stop Motion" style="background: linear-gradient(135deg, #a16207, #451a03);">Claymation</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Custom Intent Textarea -->
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="custom-intent-input" class="form-label">Введите ваше намерение описать изображение:</label>
+                    <textarea id="custom-intent-input" class="form-textarea" rows="3" placeholder="Создайте универсальный промпт для генерации изображения, вдохновлённый этим изображением, чтобы..."></textarea>
+                  </div>
+                </div>
+
+                <button class="btn btn-primary btn-block mt-2" id="generate-btn" disabled>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-spinner-icon" id="btn-icon">
+                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+                  </svg>
+                  <span id="btn-text">Выберите изображение</span>
+                </button>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- Right Panel: Output Section -->
+          <section class="panel-card output-panel">
+            <div class="card-header">
+              <h2 class="card-title">3. Описание & Анализ AI</h2>
+              <p class="card-subtitle">Результат автоматического распознавания сцены</p>
+            </div>
+            
+            <div class="card-body flex-column">
+              <!-- Output Result Card Wrapper -->
+              <div class="output-container" id="output-box">
+                
+                <!-- Initial State Placeholder -->
+                <div class="output-placeholder" id="output-placeholder-el">
+                  <div class="placeholder-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                  </div>
+                  <h3 class="placeholder-title">Ожидание запуска</h3>
+                  <p class="placeholder-text">Загрузите картинку слева и нажмите кнопку «Анализировать», чтобы получить мгновенное описание.</p>
+                </div>
+
+                <!-- Active Skeleton Loader -->
+                <div class="output-loader" id="output-loader-el" style="display:none;">
+                  <div class="skeleton-line-header"></div>
+                  <div class="skeleton-line"></div>
+                  <div class="skeleton-line"></div>
+                  <div class="skeleton-line"></div>
+                  <div class="skeleton-line short"></div>
+                  <div class="loading-label-container">
+                    <span class="active-loading-dot"></span>
+                    <span id="loading-step-text">Нейросеть изучает детали изображения...</span>
+                  </div>
+                </div>
+
+                <!-- Real Output Text Content -->
+                <div class="output-text-area" id="output-text" style="display:none;"></div>
+                
+                <!-- A/B Comparison Output Content -->
+                <div class="output-ab-area" id="output-ab-area" style="display:none; gap: 20px;">
+                  <div style="flex: 1; border: 1px solid var(--accent-primary-glow); border-radius: var(--radius-sm); padding: 15px; background: rgba(0,0,0,0.2);">
+                    <h4 style="margin-bottom: 10px; color: var(--accent-primary); display: flex; align-items: center; gap: 8px;">
+                      <span class="badge-dot gemini"></span> Gemini API
+                    </h4>
+                    <div id="output-text-gemini" style="white-space: pre-wrap; font-size: 0.95rem; color: var(--text-main); line-height: 1.6;"></div>
+                  </div>
+                  <div style="flex: 1; border: 1px solid var(--accent-secondary-glow); border-radius: var(--radius-sm); padding: 15px; background: rgba(0,0,0,0.2);">
+                    <h4 style="margin-bottom: 10px; color: var(--accent-secondary); display: flex; align-items: center; gap: 8px;">
+                      <span class="badge-dot lmstudio"></span> LM Studio
+                    </h4>
+                    <div id="output-text-lmstudio" style="white-space: pre-wrap; font-size: 0.95rem; color: var(--text-main); line-height: 1.6;"></div>
+                  </div>
+                </div>
+                
+              </div>
+              
+              <!-- Bottom Action Controls -->
+              <div class="output-actions-bar" id="output-actions" style="display:none;">
+                <button class="btn btn-secondary" id="copy-btn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="action-icon">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  <span id="copy-btn-text">Копировать</span>
+                </button>
+                
+                <button class="btn btn-secondary" id="regenerate-btn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="action-icon">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                  </svg>
+                  <span data-i18n="btn_regenerate">Повторить</span>
+                </button>
+                
+                <button class="btn btn-secondary" id="export-txt-btn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="action-icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  <span data-i18n="btn_export_txt">Скачать TXT</span>
+                </button>
+                
+                <button class="btn btn-secondary" id="save-gallery-btn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="action-icon">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <span>Сохранить</span>
+                </button>
+                
+                <button class="btn btn-secondary text-danger ml-auto" id="reset-btn">
+                  <span>Сброс</span>
+                </button>
+              </div>
+
+            </div>
+          </section>
+          
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- Modal Overlays -->
+  
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settings-modal" style="display:none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Настройки подключения к AI</h3>
+        <button class="modal-close-btn" id="close-settings-btn" aria-label="Закрыть">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <!-- Gemini settings -->
+        <div class="settings-section">
+          <h4 class="settings-section-title">Google Gemini API</h4>
+          <p class="settings-section-desc">Используется для быстрого и качественного облачного распознавания. Ключ хранится локально в вашем браузере.</p>
+          <div class="form-group">
+            <label for="gemini-key-input" class="form-label">API Ключ Gemini:</label>
+            <div class="input-password-wrapper">
+              <input type="password" id="gemini-key-input" class="form-input" placeholder="AIzaSy...">
+              <button class="btn-toggle-visibility" id="toggle-key-visibility-btn" type="button" aria-label="Показать ключ">👁️</button>
+            </div>
+            <span class="form-help">Получите бесплатный ключ в <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio</a>.</span>
+          </div>
+        </div>
+        
+        <!-- LM Studio settings -->
+        <div class="settings-section mt-4">
+          <h4 class="settings-section-title">Локальный LM Studio Server</h4>
+          <p class="settings-section-desc">Используется для 100% приватного локального оффлайн-анализа прямо на вашем компьютере.</p>
+          
+          <div class="form-row grid-2">
+            <div class="form-group">
+              <label for="lm-studio-url-input" class="form-label">Адрес сервера LM Studio:</label>
+              <input type="text" id="lm-studio-url-input" class="form-input" placeholder="http://localhost:1234/v1">
+            </div>
+            <div class="form-group">
+              <label for="lm-studio-model-input" class="form-label">Название Vision-модели (опционально):</label>
+              <input type="text" id="lm-studio-model-input" class="form-input" placeholder="Напр. llava-v1.6-mistral-7b">
+            </div>
+          </div>
+          <span class="form-help">Запустите локальный сервер во вкладке «Local Server» в LM Studio и загрузите мультимодальную (Vision) модель (например, Llava, Moondream, Qwen-VL).</span>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancel-settings-btn">Отмена</button>
+        <button class="btn btn-primary" id="save-settings-btn">Сохранить настройки</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- History Sidebar Drawer -->
+  <div class="modal-overlay drawer-overlay" id="history-drawer" style="display:none;">
+    <div class="drawer-card">
+      <div class="modal-header">
+        <h3 class="modal-title">История сканирований</h3>
+        <button class="modal-close-btn" id="close-history-btn" aria-label="Закрыть">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="drawer-body" id="history-items-container">
+        <!-- History Items get dynamically generated here -->
+        <div class="history-empty-state">
+          <div class="empty-state-icon">📂</div>
+          <h4>История пуста</h4>
+          <p>Все сделанные вами анализы будут сохраняться в браузере локально.</p>
+        </div>
+      </div>
+      
+      <div class="modal-footer justify-between">
+        <button class="btn btn-secondary text-danger" id="clear-history-btn">Очистить историю</button>
+        <button class="btn btn-secondary" id="close-history-footer-btn">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image & Video Editor Modal -->
+  <div class="modal-overlay" id="editor-modal" style="display:none; z-index: 1000;">
+    <div class="modal-content" style="max-width: 900px; width: 90%; max-height: 90vh; display: flex; flex-direction: column; padding: 20px;">
+      <div class="modal-header">
+        <h3 data-i18n="editor_title">Редактор / Видео-захват</h3>
+        <button class="modal-close-btn" id="close-editor-btn" aria-label="Закрыть">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="modal-body" style="flex: 1; min-height: 300px; display: flex; align-items: center; justify-content: center; background: #000; border-radius: 8px; position: relative; overflow: hidden; margin-bottom: 20px;">
+        
+        <!-- Video Player (Hidden by default) -->
+        <video id="editor-video" controls crossorigin="anonymous" style="max-width: 100%; max-height: 100%; display: none; object-fit: contain;"></video>
+        
+        <!-- Canvas wrapper for drawing -->
+        <div id="editor-canvas-wrapper" style="position: relative; max-width: 100%; max-height: 100%; display: none;">
+          <!-- The background image drawn here -->
+          <canvas id="editor-canvas" style="display: block; max-width: 100%; max-height: 60vh; cursor: crosshair; touch-action: none; border-radius: 4px;"></canvas>
+        </div>
+
+      </div>
+      
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 15px;">
+        
+        <!-- Tools for Image/Canvas Drawing -->
+        <div class="editor-tools" id="editor-image-tools" style="display: flex; gap: 15px; align-items: center;">
+          <input type="color" id="editor-color" value="#ff0044" title="Цвет маркера" style="width: 32px; height: 32px; padding: 0; border: none; border-radius: 50%; cursor: pointer;">
+          
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.7;"><circle cx="12" cy="12" r="3"></circle></svg>
+            <input type="range" id="editor-brush-size" min="2" max="40" value="6" title="Размер кисти" style="width: 100px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.7;"><circle cx="12" cy="12" r="8"></circle></svg>
+          </div>
+          
+          <button class="btn btn-secondary" id="editor-clear-btn" style="padding: 6px 12px; font-size: 0.85rem;">Очистить рисунок</button>
+        </div>
+        
+        <!-- Tools for Video Grabber -->
+        <div class="editor-video-tools" id="editor-video-tools" style="display: none; flex: 1;">
+          <span style="font-size: 0.9rem; color: var(--text-muted);">Поставьте видео на паузу в нужный момент, затем нажмите захват.</span>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <!-- Capture frame button for video mode -->
+          <button class="btn btn-primary" id="editor-capture-btn" style="display: none;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+            <span>Захватить кадр</span>
+          </button>
+          
+          <!-- Save modified image button for canvas mode -->
+          <button class="btn btn-primary" id="editor-save-btn" style="display: none;">
+            <span>Готово (Сохранить)</span>
+          </button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications (Micro-interaction) -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Fullscreen Gallery Modal -->
+  <div class="modal-overlay" id="gallery-modal" style="display:none; align-items:flex-start; padding-top: 40px; backdrop-filter: blur(20px);">
+    <div class="modal-card" style="width: 90%; max-width: 1400px; height: 85vh; display: flex; flex-direction: column;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="display: flex; align-items: center; gap: 10px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--warning);">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          Галерея промптов
+        </h3>
+        <button class="modal-close-btn" id="close-gallery-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="modal-body" style="flex: 1; overflow-y: auto; padding: 24px; max-height: none;">
+        <div class="gallery-grid" id="gallery-grid">
+          <!-- Gallery items will be injected here -->
+        </div>
+        <div class="history-empty-state" id="gallery-empty-state" style="height: 100%;">
+          <div class="empty-state-icon">🖼️</div>
+          <p>Ваша галерея пуста</p>
+          <span style="font-size: 0.8rem; margin-top: 8px;">Сохраняйте лучшие результаты с помощью кнопки со звездочкой!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Logic Orchestrator -->
+  <script src="js/i18n.js?v=4"></script>
+  <script src="js/app.js?v=4"></script>
+</body>
+</html>
