@@ -39,7 +39,7 @@
       </div>
       
       <nav class="sidebar-nav">
-        <div class="nav-section-title">Инструменты AI</div>
+        <div class="nav-section-title" data-i18n="sidebar_tools">Инструменты AI</div>
         <ul class="nav-links">
           <li>
             <a href="#" class="nav-link active" id="nav-describer">
@@ -53,7 +53,7 @@
           </li>
         </ul>
         
-        <div class="nav-section-title">История & Архивы</div>
+        <div class="nav-section-title" data-i18n="sidebar_archives">История & Архивы</div>
         <ul class="nav-links">
           <li>
             <a href="#" class="nav-link" id="nav-history-btn">
@@ -71,7 +71,7 @@
                 <circle cx="8.5" cy="8.5" r="1.5"></circle>
                 <polyline points="21 15 16 10 5 21"></polyline>
               </svg>
-              <span>Галерея промптов</span>
+              <span data-i18n="nav_gallery">Галерея промптов</span>
             </a>
           </li>
         </ul>
@@ -208,7 +208,7 @@
                   </div>
                   
                   <div class="form-group">
-                    <label for="lang-select" class="form-label">Язык вывода:</label>
+                    <label for="lang-select" class="form-label" data-i18n="lang_label">Язык вывода:</label>
                     <select id="lang-select" class="form-select">
                       <option value="ru" selected>Русский (RU)</option>
                       <option value="en">English (EN)</option>
@@ -223,24 +223,24 @@
                 <!-- Template Tags Grid -->
                 <div class="form-row">
                   <div class="form-group">
-                    <label class="form-label">Предоставленные шаблоны (необязательно):</label>
+                    <label class="form-label" data-i18n="template_label">Предоставленные шаблоны (необязательно):</label>
                     <input type="hidden" id="mode-select" value="detailed">
                     <div class="template-tags-grid" id="template-tags-container">
-                      <button type="button" class="template-tag-btn active" data-value="detailed">Подробное описание</button>
-                      <button type="button" class="template-tag-btn" data-value="caption">Краткое описание</button>
-                      <button type="button" class="template-tag-btn" data-value="people">Описание людей</button>
-                      <button type="button" class="template-tag-btn" data-value="marketing">Маркетинговый текст</button>
-                      <button type="button" class="template-tag-btn" data-value="fashion">Одежда и мода</button>
-                      <button type="button" class="template-tag-btn" data-value="objects">Распознавание объектов</button>
-                      <button type="button" class="template-tag-btn" data-value="problems">Решение задач по изображению</button>
-                      <button type="button" class="template-tag-btn" data-value="art-style">Анализ художественного стиля</button>
-                      <button type="button" class="template-tag-btn" data-value="chatgpt-prompt">Создать промпт для ChatGPT</button>
-                      <button type="button" class="template-tag-btn" data-value="image-prompt">Создать промпт изображения</button>
-                      <button type="button" class="template-tag-btn" data-value="nano-banana">Создать промпт Nano Banana</button>
-                      <button type="button" class="template-tag-btn" data-value="midjourney-prompt">Создать промпт для Midjourney</button>
-                      <button type="button" class="template-tag-btn" data-value="flux-prompt">Создать промпт для Flux</button>
-                      <button type="button" class="template-tag-btn" data-value="pixar-3d">Создать промпт 3D Pixar</button>
-                      <button type="button" class="template-tag-btn" data-value="json-prompt">Создать JSON-промпт</button>
+                      <button type="button" class="template-tag-btn active" data-value="detailed" data-i18n="tpl_detailed">Подробное описание</button>
+                      <button type="button" class="template-tag-btn" data-value="caption" data-i18n="tpl_caption">Краткое описание</button>
+                      <button type="button" class="template-tag-btn" data-value="people" data-i18n="tpl_people">Описание людей</button>
+                      <button type="button" class="template-tag-btn" data-value="marketing" data-i18n="tpl_marketing">Маркетинговый текст</button>
+                      <button type="button" class="template-tag-btn" data-value="fashion" data-i18n="tpl_fashion">Одежда и мода</button>
+                      <button type="button" class="template-tag-btn" data-value="objects" data-i18n="tpl_objects">Распознавание объектов</button>
+                      <button type="button" class="template-tag-btn" data-value="problems" data-i18n="tpl_problems">Решение задач по изображению</button>
+                      <button type="button" class="template-tag-btn" data-value="art-style" data-i18n="tpl_art_style">Анализ художественного стиля</button>
+                      <button type="button" class="template-tag-btn" data-value="chatgpt-prompt" data-i18n="tpl_chatgpt">Создать промпт для ChatGPT</button>
+                      <button type="button" class="template-tag-btn" data-value="image-prompt" data-i18n="tpl_image_prompt">Создать промпт изображения</button>
+                      <button type="button" class="template-tag-btn" data-value="nano-banana" data-i18n="tpl_nano">Создать промпт Nano Banana</button>
+                      <button type="button" class="template-tag-btn" data-value="midjourney-prompt" data-i18n="tpl_midjourney">Создать промпт для Midjourney</button>
+                      <button type="button" class="template-tag-btn" data-value="flux-prompt" data-i18n="tpl_flux">Создать промпт для Flux</button>
+                      <button type="button" class="template-tag-btn" data-value="pixar-3d" data-i18n="tpl_pixar">Создать промпт 3D Pixar</button>
+                      <button type="button" class="template-tag-btn" data-value="json-prompt" data-i18n="tpl_json">Создать JSON-промпт</button>
                     </div>
                   </div>
                 </div>
@@ -370,8 +370,8 @@
                 <!-- Custom Intent Textarea -->
                 <div class="form-row">
                   <div class="form-group">
-                    <label for="custom-intent-input" class="form-label">Введите ваше намерение описать изображение:</label>
-                    <textarea id="custom-intent-input" class="form-textarea" rows="3" placeholder="Создайте универсальный промпт для генерации изображения, вдохновлённый этим изображением, чтобы..."></textarea>
+                    <label for="custom-intent-input" class="form-label" data-i18n="intent_label">Введите ваше намерение описать изображение:</label>
+                    <textarea id="custom-intent-input" class="form-textarea" rows="3" placeholder="Создайте универсальный промпт для генерации изображения, вдохновлённый этим изображением, чтобы..." data-i18n="intent_placeholder"></textarea>
                   </div>
                 </div>
 
@@ -379,7 +379,7 @@
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-spinner-icon" id="btn-icon">
                     <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
                   </svg>
-                  <span id="btn-text">Выберите изображение</span>
+                  <span id="btn-text" data-i18n="btn_analyze">Выберите изображение</span>
                 </button>
               </div>
 
@@ -389,8 +389,8 @@
           <!-- Right Panel: Output Section -->
           <section class="panel-card output-panel">
             <div class="card-header">
-              <h2 class="card-title">3. Описание & Анализ AI</h2>
-              <p class="card-subtitle">Результат автоматического распознавания сцены</p>
+              <h2 class="card-title" data-i18n="step3_title">3. Описание & Анализ AI</h2>
+              <p class="card-subtitle" data-i18n="step3_subtitle">Результат автоматического распознавания сцены</p>
             </div>
             
             <div class="card-body flex-column">
@@ -405,8 +405,8 @@
                       <circle cx="12" cy="12" r="3"></circle>
                     </svg>
                   </div>
-                  <h3 class="placeholder-title">Ожидание запуска</h3>
-                  <p class="placeholder-text">Загрузите картинку слева и нажмите кнопку «Анализировать», чтобы получить мгновенное описание.</p>
+                  <h3 class="placeholder-title" data-i18n="placeholder_title">Ожидание запуска</h3>
+                  <p class="placeholder-text" data-i18n="placeholder_text">Загрузите картинку слева и нажмите кнопку «Анализировать», чтобы получить мгновенное описание.</p>
                 </div>
 
                 <!-- Active Skeleton Loader -->
@@ -418,7 +418,7 @@
                   <div class="skeleton-line short"></div>
                   <div class="loading-label-container">
                     <span class="active-loading-dot"></span>
-                    <span id="loading-step-text">Нейросеть изучает детали изображения...</span>
+                    <span id="loading-step-text" data-i18n="loading_text">Нейросеть изучает детали изображения...</span>
                   </div>
                 </div>
 
@@ -450,7 +450,7 @@
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                   </svg>
-                  <span id="copy-btn-text">Копировать</span>
+                  <span id="copy-btn-text" data-i18n="btn_copy">Копировать</span>
                 </button>
                 
                 <button class="btn btn-secondary" id="regenerate-btn">
@@ -471,11 +471,11 @@
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="action-icon">
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                   </svg>
-                  <span>Сохранить</span>
+                  <span data-i18n="btn_save_gallery">Сохранить</span>
                 </button>
                 
                 <button class="btn btn-secondary text-danger ml-auto" id="reset-btn">
-                  <span>Сброс</span>
+                  <span data-i18n="btn_reset">Сброс</span>
                 </button>
               </div>
 
